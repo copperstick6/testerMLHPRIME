@@ -77,4 +77,6 @@ def returnOpps():
     curNeeded = str(request.form["needed"])
     totOpps.append([curOpp, curDate, curLocation, curNeeded])
     return str(totOpps)
-app.run()
+
+if __name__ == '__main__':
+    app.run(debug=True)
