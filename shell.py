@@ -1,8 +1,21 @@
 # basic shell with data for our project
 # data is manually added until further notice
-from flask import Flask, render_template, request
+from flask import Flask, request
+import logging
+import sys
 app = Flask(__name__)
 
+# Configure logging.
+app.logger.setLevel(logging.DEBUG)
+del app.logger.handlers[:]
+
+handler = logging.StreamHandler(stream=sys.stdout)
+handler.setLevel(logging.DEBUG)
+handler.formatter = logging.Formatter(
+    fmt=u"%(asctime)s level=%(levelname)s %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%SZ",
+)
+app.logger.addHandler(handler)
 
 # oppList is the defined as the current Opportunity List
 totOpps = []
@@ -23,6 +36,15 @@ totUsers = {
     ]
 }
 
+@app.route('/clearUsers', methods=['GET'])
+def removeUsers():
+    del totUsers [:]
+    return str(totUsers)
+
+@app.route('/clearOpp', methods=['GET'])
+def removeOpps():
+    del totOpps [:]
+    return str(totOpps)
 
 # object posted: ["userName", "PhoneNumber", "address"]
 @app.route('/addUser', methods=['POST'])
@@ -55,7 +77,4 @@ def returnOpps():
     curNeeded = str(request.form["needed"])
     totOpps.append([curOpp, curDate, curLocation, curNeeded])
     return str(totOpps)
-
-
-if __name__ == "__main__":
-    app.run()
+app.run()
