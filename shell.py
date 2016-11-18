@@ -38,7 +38,7 @@ totUsers = {
 
 @app.route('/clearUsers', methods=['GET'])
 def removeUsers():
-    del totUsers [:]
+    totUsers = {}
     return str(totUsers)
 
 @app.route('/clearOpp', methods=['GET'])
